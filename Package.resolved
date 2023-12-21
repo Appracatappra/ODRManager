@@ -1,0 +1,68 @@
+{
+  "pins" : [
+    {
+      "identity" : "gracelanguage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Appracatappra/GraceLanguage",
+      "state" : {
+        "revision" : "c430781a17d6633d97835126d7408a3b436c9295",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "logmanager",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Appracatappra/LogManager",
+      "state" : {
+        "revision" : "bc21e80add4315c28e9461b8f583cfd79e4c74f8",
+        "version" : "1.0.3"
+      }
+    },
+    {
+      "identity" : "simpleserializer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Appracatappra/SimpleSerializer",
+      "state" : {
+        "revision" : "09b79ad58de8f294acc06ee0b414d8b92dac06cc",
+        "version" : "1.0.4"
+      }
+    },
+    {
+      "identity" : "soundmanager",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Appracatappra/SoundManager",
+      "state" : {
+        "revision" : "04a17d306bea71729877696fa16a55cfb84f8e1a",
+        "version" : "1.0.3"
+      }
+    },
+    {
+      "identity" : "swiftletutilities",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Appracatappra/SwiftletUtilities",
+      "state" : {
+        "revision" : "e0cc0c97dea11bca029bc18ef784d11415255c93",
+        "version" : "1.1.14"
+      }
+    },
+    {
+      "identity" : "swiftuigamepad",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Appracatappra/SwiftUIGamepad",
+      "state" : {
+        "revision" : "31d2eceede88591032aa723d17b25af1319fbb25",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swiftuikit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Appracatappra/SwiftUIKit",
+      "state" : {
+        "revision" : "92de0ba13b9d66d71436cf5c566e7838b5be325b",
+        "version" : "1.0.10"
+      }
+    }
+  ],
+  "version" : 2
+}
