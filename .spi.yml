@@ -1,0 +1,8 @@
+version: 1
+builder:
+  configs:
+  - platform: ios
+    scheme: ODRManager
+  - platform: tvos
+    scheme: ODRManager
+  - documentation_targets: [ODRManager]
