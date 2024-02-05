@@ -1,4 +1,4 @@
-# SwiftUIGamepad
+# ODRManager
 
 ![](https://img.shields.io/badge/license-MIT-green) ![](https://img.shields.io/badge/maintained%3F-Yes-green) ![](https://img.shields.io/badge/swift-5.4-green) ![](https://img.shields.io/badge/iOS-17.0-red) ![](https://img.shields.io/badge/tvOS-17.0-red) ![](https://img.shields.io/badge/release-v1.0.0-blue) ![](https://img.shields.io/badge/dependency-LogManager-orange) ![](https://img.shields.io/badge/dependency-SoundManager-orange) ![](https://img.shields.io/badge/dependency-SwiftletUtilities-orange) ![](https://img.shields.io/badge/dependency-GraceLanguage-orange) ![](https://img.shields.io/badge/dependency-SimpleSerializer-orange) ![](https://img.shields.io/badge/dependency-SwiftUIKit-orange) ![](https://img.shields.io/badge/dependency-SwiftUIGamepad-orange)
 
