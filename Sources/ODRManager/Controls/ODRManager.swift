@@ -248,9 +248,22 @@ open class ODRManager {
         
     }
     
-    /// Releases the resouce with the given tag.
+    /// Releases the resouce with the given tag or list of tags separated by a comma.
     /// - Parameter tag: The tag to release resources for.
     public func releaseResourceWith(tag:String) {
+        if tag.contains(",") {
+            let tags = tag.components(separatedBy: ",")
+            for item in tags {
+                releaseResourceHandler(tag: item)
+            }
+        } else {
+            releaseResourceHandler(tag: tag)
+        }
+    }
+    
+    /// Releases the resouce with the given tag.
+    /// - Parameter tag: The tag to release resources for.
+    public func releaseResourceHandler(tag:String) {
         
         // Has a tag been specified?
         guard tag != "" else {

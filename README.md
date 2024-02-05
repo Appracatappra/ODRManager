@@ -72,23 +72,23 @@ ODRManager.shared.prefetchResourceWith(tag: "Tag01,Tag02,...")
 If you need to request specific content, use the `requestResourceWith` function. See Example:
 
 ```
-OnDemandResource.loadResourceTag = "Tag01"
-ODRManager.shared.requestResourceWith(tag: OnDemandResource.loadResourceTag, onLoadingResource: {
-        Debug.info(subsystem: "MasterDataStore", category: "On Demand Resource", "Loading: \(OnDemandResource.loadResourceTag)")
-        OnDemandResource.lastResourceLoadError = ""
-        OnDemandResource.isLoadingResouces = true
+OnDemandResources.loadResourceTag = "Tag01"
+ODRManager.shared.requestResourceWith(tag: OnDemandResources.loadResourceTag, onLoadingResource: {
+        Debug.info(subsystem: "MasterDataStore", category: "On Demand Resource", "Loading: \(OnDemandResources.loadResourceTag)")
+        OnDemandResources.lastResourceLoadError = ""
+        OnDemandResources.isLoadingResouces = true
     }, onSuccess: {
-        Debug.info(subsystem: "MasterDataStore", category: "On Demand Resource", "Content Loaded: \(OnDemandResource.loadResourceTagg)")
-        OnDemandResource.lastResourceLoadError = ""
-        OnDemandResource.isLoadingResouces = false
+        Debug.info(subsystem: "MasterDataStore", category: "On Demand Resource", "Content Loaded: \(OnDemandResources.loadResourceTagg)")
+        OnDemandResources.lastResourceLoadError = ""
+        OnDemandResources.isLoadingResouces = false
         
         // Handle load completing ...
     }, onFailure: {error in
-        Log.error(subsystem: "MasterDataStore", category: "On Demand Resource", "Error: \(OnDemandResource.loadResourceTag) = \(error)")
-        OnDemandResource.lastResourceLoadError = error
+        Log.error(subsystem: "MasterDataStore", category: "On Demand Resource", "Error: \(OnDemandResources.loadResourceTag) = \(error)")
+        OnDemandResources.lastResourceLoadError = error
         
         // NOTE: Marking `isLoadingResouces` `true` so that the error can be displayed using a `ODRContentLoadingOverlay` in our UI
-        OnDemandResource.isLoadingResouces = true
+        OnDemandResources.isLoadingResouces = true
     })
 ```
 
@@ -97,13 +97,13 @@ ODRManager.shared.requestResourceWith(tag: OnDemandResource.loadResourceTag, onL
 The `ODRContentLoadingOverlay` view can be used as a standardized Content Loading and Loading Error overlay in your app's UI. For example:
 
 ```
-if OnDemandResource.isLoadingResouces {
+if OnDemandResources.isLoadingResouces {
 	ODRContentLoadingOverlay(onLoadedSuccessfully: {
 		// Handle the load completing ...
-		OnDemandResource.isLoadingResouces = false
+		OnDemandResources.isLoadingResouces = false
 	}, onCancelDownload: {
 		// Handle the user wanting to cancel the download ...
-		OnDemandResource.isLoadingResouces = false
+		OnDemandResources.isLoadingResouces = false
 	})
 }
 ```
@@ -181,7 +181,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // Set any `ODRManager` global style defaults here before any `Views` are drawn.
         // Set style defaults
-        OnDemandResource.fontColor = .white
+        OnDemandResources.fontColor = .white
         return true
     }
     

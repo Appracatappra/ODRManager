@@ -14,7 +14,7 @@ By including the `ODRManager` in your app and tagging specific content in your s
 
 Before you can use a Gamepad in your Swift App, you need to enable support. In Xcode, select your App's **Project** > **Signing & Capabilities** > **+ Capability** and add **Game Controllers**:
 
-@Image(source: "Image04.png", alt: "Xcode Signing & Capabilities")
+![](Sources/ODRManager/ODRManager.docc/Resources/Image04.png)
 
 Once enabled, select the types of Gamepads that you want to support from the list of checkboxes.
 
@@ -28,11 +28,11 @@ Once enabled, select the types of Gamepads that you want to support from the lis
 
 When including content into your app that you want to download later using the `ODRManager`, you'll use Xcode's **On Demand Resource Tag** property to assign an **ODR Tag** to the content. For example, you can mark items in an **Asset Catalog**:
 
-@Image(source: "Image02.png", alt: "Xcode On Demand Resource Tag")
+![](Sources/ODRManager/ODRManager.docc/Resources/Image02.png)
 
 All items with the same **On Demand Resource Tag** will be gathered together and build into an **ODR Package** that the app can later download using the `ODCManager`. In Xcode under your app's **Project** > **Resource Tags** you can see all of the **ODR Packages** and their build sizes:
 
-@Image(source: "Image01.png", alt: "Xcode Resource Tags")
+![](Sources/ODRManager/ODRManager.docc/Resources/Image01.png)
 
 > For more information on working with **On Demand Resources**, please see Apple's documentation at [https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/index.html#//apple_ref/doc/uid/TP40015083-CH2-SW1](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/index.html#//apple_ref/doc/uid/TP40015083-CH2-SW1)
 
@@ -47,23 +47,23 @@ ODRManager.shared.prefetchResourceWith(tag: "Tag01,Tag02,...")
 If you need to request specific content, use the `requestResourceWith` function. See Example:
 
 ```
-OnDemandResource.loadResourceTag = "Tag01"
-ODRManager.shared.requestResourceWith(tag: OnDemandResource.loadResourceTag, onLoadingResource: {
-        Debug.info(subsystem: "MasterDataStore", category: "On Demand Resource", "Loading: \(OnDemandResource.loadResourceTag)")
-        OnDemandResource.lastResourceLoadError = ""
-        OnDemandResource.isLoadingResouces = true
+OnDemandResources.loadResourceTag = "Tag01"
+ODRManager.shared.requestResourceWith(tag: OnDemandResources.loadResourceTag, onLoadingResource: {
+        Debug.info(subsystem: "MasterDataStore", category: "On Demand Resource", "Loading: \(OnDemandResources.loadResourceTag)")
+        OnDemandResources.lastResourceLoadError = ""
+        OnDemandResources.isLoadingResouces = true
     }, onSuccess: {
-        Debug.info(subsystem: "MasterDataStore", category: "On Demand Resource", "Content Loaded: \(OnDemandResource.loadResourceTagg)")
-        OnDemandResource.lastResourceLoadError = ""
-        OnDemandResource.isLoadingResouces = false
+        Debug.info(subsystem: "MasterDataStore", category: "On Demand Resource", "Content Loaded: \(OnDemandResources.loadResourceTagg)")
+        OnDemandResources.lastResourceLoadError = ""
+        OnDemandResources.isLoadingResouces = false
         
         // Handle load completing ...
     }, onFailure: {error in
-        Log.error(subsystem: "MasterDataStore", category: "On Demand Resource", "Error: \(OnDemandResource.loadResourceTag) = \(error)")
-        OnDemandResource.lastResourceLoadError = error
+        Log.error(subsystem: "MasterDataStore", category: "On Demand Resource", "Error: \(OnDemandResources.loadResourceTag) = \(error)")
+        OnDemandResources.lastResourceLoadError = error
         
         // NOTE: Marking `isLoadingResouces` `true` so that the error can be displayed using a `ODRContentLoadingOverlay` in our UI
-        OnDemandResource.isLoadingResouces = true
+        OnDemandResources.isLoadingResouces = true
     })
 ```
 
@@ -72,18 +72,18 @@ ODRManager.shared.requestResourceWith(tag: OnDemandResource.loadResourceTag, onL
 The `ODRContentLoadingOverlay` view can be used as a standardized Content Loading and Loading Error overlay in your app's UI. For example:
 
 ```
-if OnDemandResource.isLoadingResouces {
-	ODRContentLoadingOverlay(onLoadedSuccessfully: {
-		// Handle the load completing ...
-		OnDemandResource.isLoadingResouces = false
-	}, onCancelDownload: {
-		// Handle the user wanting to cancel the download ...
-		OnDemandResource.isLoadingResouces = false
-	})
+if OnDemandResources.isLoadingResouces {
+    ODRContentLoadingOverlay(onLoadedSuccessfully: {
+        // Handle the load completing ...
+        OnDemandResources.isLoadingResouces = false
+    }, onCancelDownload: {
+        // Handle the user wanting to cancel the download ...
+        OnDemandResources.isLoadingResouces = false
+    })
 }
 ```
 
-@Image(source: "Image03.png", alt: "Content Loading Overlay")
+![](Sources/ODRManager/ODRManager.docc/Resources/Image03.png)
 
 #### Release On Demand Resources
 
@@ -156,7 +156,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // Set any `ODRManager` global style defaults here before any `Views` are drawn.
         // Set style defaults
-        OnDemandResource.fontColor = .white
+        OnDemandResources.fontColor = .white
         return true
     }
     
