@@ -14,7 +14,7 @@ By including the `ODRManager` in your app and tagging specific content in your s
 
 Before you can use a Gamepad in your Swift App, you need to enable support. In Xcode, select your App's **Project** > **Signing & Capabilities** > **+ Capability** and add **Game Controllers**:
 
-![](Sources/ODRManager/ODRManager.docc/Resources/Image04.png)
+![](Image04.png)
 
 Once enabled, select the types of Gamepads that you want to support from the list of checkboxes.
 
@@ -28,25 +28,40 @@ Once enabled, select the types of Gamepads that you want to support from the lis
 
 When including content into your app that you want to download later using the `ODRManager`, you'll use Xcode's **On Demand Resource Tag** property to assign an **ODR Tag** to the content. For example, you can mark items in an **Asset Catalog**:
 
-![](Sources/ODRManager/ODRManager.docc/Resources/Image02.png)
+![](Image02.png)
 
 All items with the same **On Demand Resource Tag** will be gathered together and build into an **ODR Package** that the app can later download using the `ODCManager`. In Xcode under your app's **Project** > **Resource Tags** you can see all of the **ODR Packages** and their build sizes:
 
-![](Sources/ODRManager/ODRManager.docc/Resources/Image01.png)
+![](Image01.png)
 
 > For more information on working with **On Demand Resources**, please see Apple's documentation at [https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/index.html#//apple_ref/doc/uid/TP40015083-CH2-SW1](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/index.html#//apple_ref/doc/uid/TP40015083-CH2-SW1)
+
+### Required Setup
+
+Before you can make a request for an On-Demand Resource in your app, you will need to configure the `OnDemandResources.onRequestResourceFromBundle` to handle the request from your app's bundle.
+
+```swift
+// Make the `NSBundleResourceRequest` against the App Bundle and not the Package.
+OnDemandResources.onRequestResourceFromBundle = {tags in
+    return NSBundleResourceRequest(tags: tags)
+}
+```
+
+> See the **Where To Set The Style Changes** > **AppDelegate** > **willFinishLaunchingWithOptions** below to see the preferred area to define the `OnDemandResources.onRequestResourceFromBundle` closure.
+
+
 
 ### Using the ODRManager
 
 The `ODRManager` makes it easy to request **On Demand Resource** content and react to the content loading or failing to load. Additionally, `ODRManager` makes it easy to pre-request content in the background before it's needed so the end user doesn't have an interruption when using your app. For example:
 
-```
+```swift
 ODRManager.shared.prefetchResourceWith(tag: "Tag01,Tag02,...")
 ```
 
 If you need to request specific content, use the `requestResourceWith` function. See Example:
 
-```
+```swift
 OnDemandResources.loadResourceTag = "Tag01"
 ODRManager.shared.requestResourceWith(tag: OnDemandResources.loadResourceTag, onLoadingResource: {
         Debug.info(subsystem: "MasterDataStore", category: "On Demand Resource", "Loading: \(OnDemandResources.loadResourceTag)")
@@ -71,7 +86,7 @@ ODRManager.shared.requestResourceWith(tag: OnDemandResources.loadResourceTag, on
 
 The `ODRContentLoadingOverlay` view can be used as a standardized Content Loading and Loading Error overlay in your app's UI. For example:
 
-```
+```swift
 if OnDemandResources.isLoadingResouces {
     ODRContentLoadingOverlay(onLoadedSuccessfully: {
         // Handle the load completing ...
@@ -83,20 +98,20 @@ if OnDemandResources.isLoadingResouces {
 }
 ```
 
-![](Sources/ODRManager/ODRManager.docc/Resources/Image03.png)
+![](Image03.png)
 
 #### Release On Demand Resources
 
 To conserve memory, you should release On Demand Resources when you are finished using them. For example:
 
-```
+```swift
 // Release any required resources
 ODRManager.shared.releaseResourceWith(tag: "Tag01")
 ```
 
 Additionally, you'll need to release any failed download attempts so that they can be tried again. For example:
 
-```
+```swift
 // Release any failed resource load attempts so that they can be tried again.
 ODRManager.shared.releaseFailedResourceLoads()
 ```
@@ -105,7 +120,7 @@ ODRManager.shared.releaseFailedResourceLoads()
 
 For style changes to be in effect, you'll need to make the changes before any `Views` are drawn. You can use the following code on your main app:
 
-```
+```swift
 import SwiftUI
 import SwiftletUtilities
 import LogManager
@@ -157,6 +172,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // Set any `ODRManager` global style defaults here before any `Views` are drawn.
         // Set style defaults
         OnDemandResources.fontColor = .white
+        
+        // Make the `NSBundleResourceRequest` against the App Bundle and not the Package.
+         OnDemandResources.onRequestResourceFromBundle = {tags in
+            return NSBundleResourceRequest(tags: tags)
+         }
+        
         return true
     }
     
@@ -171,6 +192,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 ```
 
 With this code in place, make any style changes in `func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool` and they apply to all views built afterwards.
+
 
 
 

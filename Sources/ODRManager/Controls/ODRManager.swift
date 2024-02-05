@@ -136,8 +136,14 @@ open class ODRManager {
             }
         }
         
+        // Ensure we can make the request
+        guard let resourceRequest = OnDemandResources.onRequestResourceFromBundle else {
+            Log.error(subsystem: "ODRManager", category: "requestorForTag", "ERROR: Required `OnDemandResources.onRequestResourceFromBundle` has not been defined. Ignoring NSBundleResourceRequest.")
+            return ODRRequest(tag: tag, request: NSBundleResourceRequest(tags: [tag]))
+        }
+        
         // Create a new requestor
-        let request = NSBundleResourceRequest(tags: [tag])
+        let request = resourceRequest([tag]) //NSBundleResourceRequest(tags: [tag])
         let requestor = ODRRequest(tag: tag, request: request)
         requestor.id = id
         

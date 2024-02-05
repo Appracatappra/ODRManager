@@ -8,6 +8,9 @@ import SwiftletUtilities
 /// A utility for working with resources stored inside of this Swift Package.
 open class OnDemandResources {
     
+    // MARK: - Event Handlers
+    public typealias RequestResourceFromBundleEvent = ([String]) -> NSBundleResourceRequest
+    
     // MARK: - Enumerations
     /// Defines the source of a file.
     public enum Source {
@@ -19,6 +22,16 @@ open class OnDemandResources {
     }
     
     // MARK: - Static Properies
+    /// Handles the manager making a resource request from the app's bundle. If this request is made from the package's compiled code is appears to be resulting in an error.
+    ///
+    /// Example:
+    /// ```swift
+    /// OnDemandResources.onRequestResourceFromBundle = {tags in
+    ///     return NSBundleResourceRequest(tags: [tag])
+    /// }
+    /// ```
+    public static var onRequestResourceFromBundle:RequestResourceFromBundleEvent? = nil
+    
     /// The default location that this library should look for images in.
     public static var imageLocation:Source = .packageBundle
     
