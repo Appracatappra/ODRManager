@@ -9,7 +9,7 @@ import SwiftletUtilities
 open class OnDemandResources {
     
     // MARK: - Event Handlers
-    public typealias RequestResourceFromBundleEvent = ([String]) -> NSBundleResourceRequest
+    public typealias RequestResourceFromBundleEvent = (String) -> NSBundleResourceRequest
     
     // MARK: - Enumerations
     /// Defines the source of a file.
@@ -26,7 +26,7 @@ open class OnDemandResources {
     ///
     /// Example:
     /// ```swift
-    /// OnDemandResources.onRequestResourceFromBundle = {tags in
+    /// OnDemandResources.onRequestResourceFromBundle = {tag in
     ///     return NSBundleResourceRequest(tags: [tag])
     /// }
     /// ```

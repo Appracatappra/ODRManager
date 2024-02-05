@@ -67,8 +67,8 @@ Before you can make a request for an On-Demand Resource in your app, you will ne
 
 ```swift
 // Make the `NSBundleResourceRequest` against the App Bundle and not the Package.
-OnDemandResources.onRequestResourceFromBundle = {tags in
-	return NSBundleResourceRequest(tags: tags)
+OnDemandResources.onRequestResourceFromBundle = {tag in
+    return NSBundleResourceRequest(tags: [tag])
 }
 ```
 
@@ -199,9 +199,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         OnDemandResources.fontColor = .white
         
         // Make the `NSBundleResourceRequest` against the App Bundle and not the Package.
-		 OnDemandResources.onRequestResourceFromBundle = {tags in
-			return NSBundleResourceRequest(tags: tags)
-		 }
+        OnDemandResources.onRequestResourceFromBundle = {tag in
+            return NSBundleResourceRequest(tags: [tag])
+        }
         
         return true
     }

@@ -143,7 +143,7 @@ open class ODRManager {
         }
         
         // Create a new requestor
-        let request = resourceRequest([tag]) //NSBundleResourceRequest(tags: [tag])
+        let request = resourceRequest(tag) //NSBundleResourceRequest(tags: [tag])
         let requestor = ODRRequest(tag: tag, request: request)
         requestor.id = id
         
