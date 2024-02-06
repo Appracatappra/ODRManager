@@ -6,7 +6,7 @@ import SwiftUI
 import SwiftletUtilities
 
 /// A utility for working with resources stored inside of this Swift Package.
-open class OnDemandResources {
+@Observable open class OnDemandResources {
     
     // MARK: - Event Handlers
     public typealias RequestResourceFromBundleEvent = (String) -> NSBundleResourceRequest
@@ -44,11 +44,20 @@ open class OnDemandResources {
     /// The default button background color for `ODRManager` UI elements.
     public static var buttonBackgroundColor:Color = .red
     
+    /// The name of the app loading the On Demand Resources.
+    public static var appName:String = "This app"
+    
     /// The default loading background image for `ODRManager` UI elements.
     public static var loadingBackgroundImage:String = "GridBackground"
     
+    /// The default loading background color for `ODRManager` UI elements.
+    public static var loadingBackgroundColor:Color = .black
+    
     /// The default loading failed background image for `ODRManager` UI elements.
     public static var loadingFailedBackgroundImage:String = "GridBackground"
+    
+    /// The default loading failed background color for `ODRManager` UI elements.
+    public static var loadingFailedBackgroundColor:Color = .red
     
     /// The tag of the last On Demand Resource loaded.
     public static var loadResourceTag:String = ""

@@ -18,7 +18,7 @@ public struct ODRContentLoadingOverlay: View {
     
     // MARK: - Properties
     /// The name of the app loading the On Demand Resources.
-    public var appName:String = "This app"
+    public var appName:String = OnDemandResources.appName
     
     /// The resuested On Demand Resource Tag.
     public var resourceTag:String = OnDemandResources.loadResourceTag
@@ -41,6 +41,7 @@ public struct ODRContentLoadingOverlay: View {
     /// Handler that will be called if the user wants to cancel the On Demand Resource load.
     public var onCancelDownload:ResourceLoadEvent? = nil
     
+    // MARK: - State Management
     /// If `true` a gamepad is connected to the device the app is running on.
     @State var isGamepadConnected:Bool = false
     
@@ -52,6 +53,9 @@ public struct ODRContentLoadingOverlay: View {
     
     /// The current percent of downloading completed.
     @State var percentComplete:Double = 0
+    
+    /// Tracks changes in the manga page orientation.
+    @State private var screenOrientation:UIDeviceOrientation = HardwareInformation.deviceOrientation
     
     // MARK: - Computed Properties
     /// The width of the displayed text.
@@ -90,7 +94,7 @@ public struct ODRContentLoadingOverlay: View {
     ///   - loadingFailedBackgroundImage: The default loading failed background image for `ODRManager` UI elements.
     ///   - onLoadedSuccessfully: Handler that will be called if the resource is successfully loaded.
     ///   - onCancelDownload: Handler that will be called if the user wants to cancel the On Demand Resource load.
-    public init(appName: String = "This app", resourceTag: String = OnDemandResources.loadResourceTag, fontColor: Color = OnDemandResources.fontColor, buttonBackgroundColor: Color = OnDemandResources.buttonBackgroundColor, loadingBackgroundImage: String = OnDemandResources.loadingBackgroundImage, loadingFailedBackgroundImage: String = OnDemandResources.loadingFailedBackgroundImage, onLoadedSuccessfully: ResourceLoadEvent? = nil, onCancelDownload: ResourceLoadEvent? = nil) {
+    public init(appName: String = OnDemandResources.appName, resourceTag: String = OnDemandResources.loadResourceTag, fontColor: Color = OnDemandResources.fontColor, buttonBackgroundColor: Color = OnDemandResources.buttonBackgroundColor, loadingBackgroundImage: String = OnDemandResources.loadingBackgroundImage, loadingFailedBackgroundImage: String = OnDemandResources.loadingFailedBackgroundImage, onLoadedSuccessfully: ResourceLoadEvent? = nil, onCancelDownload: ResourceLoadEvent? = nil) {
         
         self.appName = appName
         self.resourceTag = resourceTag
@@ -102,10 +106,20 @@ public struct ODRContentLoadingOverlay: View {
         self.onCancelDownload = onCancelDownload
     }
     
+    // MARK: - Computed Properties
+    /// Gets the background color based on the loading state.
+    private var backgroundColor:Color {
+        if OnDemandResources.lastResourceLoadError == "" {
+            return OnDemandResources.loadingBackgroundColor
+        } else {
+            return OnDemandResources.loadingFailedBackgroundColor
+        }
+    }
+    
     // MARK: - Control Body
     /// The body of the control.
     public var body: some View {
-        content()
+        content(screenOrientation: screenOrientation)
         .onAppear {
             connectGamepad(viewID: "ODROverlay", handler: { controller, gamepadInfo in
                 isGamepadConnected = true
@@ -133,6 +147,9 @@ public struct ODRContentLoadingOverlay: View {
                     }
                 }
             }
+        }
+        .onRotate {orientation in
+            screenOrientation = orientation
         }
         .onDisappear {
             // Release the timer
@@ -166,14 +183,14 @@ public struct ODRContentLoadingOverlay: View {
     
     /// Generates the main contents of the overlay.
     /// - Returns: The main contents of the overlay.
-    @ViewBuilder private func content() -> some View {
+    @ViewBuilder private func content(screenOrientation:UIDeviceOrientation) -> some View {
         ZStack {
             if OnDemandResources.lastResourceLoadError == "" {
                 // Display background based on settings
                 if OnDemandResources.imageLocation == .appBundle {
                     Image(loadingBackgroundImage)
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .aspectRatio(contentMode: .fill)
                         .frame(width: CGFloat(HardwareInformation.screenWidth), height: CGFloat(HardwareInformation.screenHeight))
                 } else {
                     let url = SwiftUIGamepad.urlTo(resource: loadingBackgroundImage, withExtension: "png")
@@ -245,7 +262,7 @@ public struct ODRContentLoadingOverlay: View {
                 if OnDemandResources.imageLocation == .appBundle {
                     Image(loadingFailedBackgroundImage)
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .aspectRatio(contentMode: .fill)
                         .frame(width: CGFloat(HardwareInformation.screenWidth), height: CGFloat(HardwareInformation.screenHeight))
                 } else {
                     let url = SwiftUIGamepad.urlTo(resource: loadingFailedBackgroundImage, withExtension: "png")
@@ -314,6 +331,7 @@ public struct ODRContentLoadingOverlay: View {
                 }
             }
         }
+        .background(backgroundColor)
         .frame(width: CGFloat(HardwareInformation.screenWidth), height: CGFloat(HardwareInformation.screenHeight))
         .ignoresSafeArea()
     }
