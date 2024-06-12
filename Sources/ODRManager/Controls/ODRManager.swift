@@ -22,7 +22,7 @@ open class ODRManager {
     
     // MARK: - Shared Properties
     /// A common, shared instance of the `ODRManager`.
-    public static var shared:ODRManager = ODRManager()
+    public nonisolated(unsafe) static let shared:ODRManager = ODRManager()
     
     // MARK: - Properties
     /// Holds the list of requested resources for the app.

@@ -30,43 +30,43 @@ import SwiftletUtilities
     ///     return NSBundleResourceRequest(tags: [tag])
     /// }
     /// ```
-    public static var onRequestResourceFromBundle:RequestResourceFromBundleEvent? = nil
+    public nonisolated(unsafe) static var onRequestResourceFromBundle:RequestResourceFromBundleEvent? = nil
     
     /// The default location that this library should look for images in.
-    public static var imageLocation:Source = .packageBundle
+    public nonisolated(unsafe) static var imageLocation:Source = .packageBundle
     
     /// The default location that this library should look for sound effects in.
-    public static var soundLocation:Source = .packageBundle
+    public nonisolated(unsafe) static var soundLocation:Source = .packageBundle
     
     /// The default font color for `ODRManager` UI elements.
-    public static var fontColor:Color = .white
+    public nonisolated(unsafe) static var fontColor:Color = .white
     
     /// The default button background color for `ODRManager` UI elements.
-    public static var buttonBackgroundColor:Color = .red
+    public nonisolated(unsafe) static var buttonBackgroundColor:Color = .red
     
     /// The name of the app loading the On Demand Resources.
-    public static var appName:String = "This app"
+    public nonisolated(unsafe) static var appName:String = "This app"
     
     /// The default loading background image for `ODRManager` UI elements.
-    public static var loadingBackgroundImage:String = "GridBackground"
+    public nonisolated(unsafe) static var loadingBackgroundImage:String = "GridBackground"
     
     /// The default loading background color for `ODRManager` UI elements.
-    public static var loadingBackgroundColor:Color = .black
+    public nonisolated(unsafe) static var loadingBackgroundColor:Color = .black
     
     /// The default loading failed background image for `ODRManager` UI elements.
-    public static var loadingFailedBackgroundImage:String = "GridBackground"
+    public nonisolated(unsafe) static var loadingFailedBackgroundImage:String = "GridBackground"
     
     /// The default loading failed background color for `ODRManager` UI elements.
-    public static var loadingFailedBackgroundColor:Color = .red
+    public nonisolated(unsafe) static var loadingFailedBackgroundColor:Color = .red
     
     /// The tag of the last On Demand Resource loaded.
-    public static var loadResourceTag:String = ""
+    public nonisolated(unsafe) static var loadResourceTag:String = ""
     
     /// If `true` and On Demand Resource is currently loading.
-    public static var isLoadingResouces:Bool = false
+    public nonisolated(unsafe) static var isLoadingResouces:Bool = false
     
     /// Holds the las error that occurred when loading On Demand Resources.
-    public static var lastResourceLoadError:String = ""
+    public nonisolated(unsafe) static var lastResourceLoadError:String = ""
     
     // MARK: - Static Functions
     /// Gets the path to the requested resource stored in the Swift Package's Bundle.
