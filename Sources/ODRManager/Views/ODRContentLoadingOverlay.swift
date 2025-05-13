@@ -36,7 +36,7 @@ public struct ODRContentLoadingOverlay: View {
     public var loadingFailedBackgroundImage:String = OnDemandResources.loadingFailedBackgroundImage
     
     /// Handler that will be called if the resource is successfully loaded.
-    public var onLoadedSuccessfully:ResourceLoadEvent? = nil
+    nonisolated(unsafe) public var onLoadedSuccessfully:ResourceLoadEvent? = nil
     
     /// Handler that will be called if the user wants to cancel the On Demand Resource load.
     public var onCancelDownload:ResourceLoadEvent? = nil
@@ -131,9 +131,9 @@ public struct ODRContentLoadingOverlay: View {
             requestor = ODRManager.shared.findRequestor(for: resourceTag)
             
             // Create a timer to update the percentage loaded.
-            timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { timer in
+            timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [requestor] timer in
                 if let requestor {
-                    Execute.onMain {
+                    Task { @MainActor in
                         // Update the percent completed loading
                         percentComplete = requestor.request?.progress.fractionCompleted ?? 0.0
                         

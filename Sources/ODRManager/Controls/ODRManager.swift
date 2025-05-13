@@ -38,6 +38,11 @@ open class ODRManager {
     ///   - shouldReload: If `true`, the resource should always be reloaded when requested. If `false`, the system will check to see if the resouce has cached and will gain a lock on the cache.
     public func requestResourceWith(tag:String, onLoadingResource:@escaping loadingHandler, onSuccess:@escaping ODRRequest.successHandler, onFailure:@escaping ODRRequest.failureHandler, shouldReload:Bool = true) {
         
+        // Capture callback handlers
+        nonisolated(unsafe) let onLoadingResource = onLoadingResource
+        nonisolated(unsafe) let onSuccess = onSuccess
+        nonisolated(unsafe) let onFailure = onFailure
+        
         // Has a tag been requested?
         guard tag != "" else {
             // No tag, signal success
@@ -112,7 +117,7 @@ open class ODRManager {
                     }
                 } else {
                     // Inform caller of start
-                    Execute.onMain {
+                    Execute.onMain { [request, requestor] in
                         onLoadingResource()
                         
                         // Begin attempting to load resource
@@ -233,7 +238,7 @@ open class ODRManager {
             })
         } else {
             // Check to see if the resource has already been loaded.
-            request.conditionallyBeginAccessingResources() { isLoaded in
+            request.conditionallyBeginAccessingResources() { [requestor] isLoaded in
                 if isLoaded {
                     requestor.status = .loaded
                 } else {
@@ -241,9 +246,9 @@ open class ODRManager {
                     request.loadingPriority = 0.5
                     
                     // Ask the system to load the requested resource.
-                    requestor.requestResource(onSuccess: {
+                    requestor.requestResource(onSuccess: {[requestor] in
                         requestor.status = .loaded
-                    }, onFailure: {error in
+                    }, onFailure: {[requestor] error in
                         requestor.status = .failed
                         Log.error(subsystem: "ODRManager", category: "prefetchResourceHandler", "Prefetch \(tag) Failed: \(requestor.error)")
                         OnDemandResources.lastResourceLoadError = requestor.error

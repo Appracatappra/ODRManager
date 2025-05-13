@@ -131,11 +131,14 @@ open class ODRRequest {
                     self.error = "Unknown Error (\(self.tag)): \(error.description)"
                 }
                 
+                // Capture failure callback
+                nonisolated(unsafe) let failure = onFailure
+                
                 // Inform caller of error
-                Execute.onMain {
+                Execute.onMain { [self] in
                     Log.error(subsystem: "ODRRequest", category: "requestResource", "\(self.tag) Failure: \(self.error)")
                     OnDemandResources.lastResourceLoadError = self.error
-                    onFailure(self.error)
+                    failure(self.error)
                 }
             } else if let error = rawError {
                 // A generic error has occurred.
@@ -144,13 +147,19 @@ open class ODRRequest {
                 OnDemandResources.lastResourceLoadError = self.error
                 self.status = .failed
                 
+                // Capture failure callback
+                nonisolated(unsafe) let failure = onFailure
+                
                 // Inform caller of error
-                Execute.onMain {
-                    onFailure(self.error)
+                Execute.onMain { [self] in
+                    failure(self.error)
                 }
             } else {
                 self.error = ""
                 self.status = .loaded
+                
+                // Capture success callback
+                nonisolated(unsafe) let onSuccess = onSuccess
                 
                 // Inform the caller that the resource loaded successfully.
                 Execute.onMain {
